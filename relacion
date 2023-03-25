@@ -1,0 +1,17 @@
+Lenda: Hyrje ne programim.
+Punoi: Simeon Flamuraj
+
+Relacion per detyren e kursit me kodin e bashkengjitur:
+
+Me ane te kerkeses kam realizuar si me poshte kodin i cili mundeson perdoruesin te regjistroje ne system qytetare 
+dhe te kete mundesi te modifikoje ose fshi qytetare me ane te ID-se ose kerkimin e qytetareve nepermjet emrit, mbiemrit dhe numrit te celularit.
+
+Kjo detyre u nise duke deklaruar librarite qe do te perdoreshin dhe variablat globale, me pas duke deklaruat prototipet e 
+funksioneve. Ne kete detyre jane perdorur kryesisht funksione void te cilat nuk kthejne vlere dhe funksionet qe kthejne vlere
+jane perdorur per te plotesuar zgjidhjen e prototipeve qe do te perdoren ne main. Nje funksion i tille eshte “int gjej_qytetarin”
+i cili gjen nese ID te cilin perdoruesi ka vendosur ekziston apo jo e cila vendose nese qytetari ekziston ose jo ne sistem. 
+Funksionet per radhitjen e emrit ose mbiemrit jane bere nepermjet funksionit strcmp() te cilat krahasojne nje vlere string me nje 
+tjeter dhe duke perdorur variablat temporale per te radhitjen e tyre. Ruajtja e te dhenave ne file ndodh nepermjet funksionit ruaj() 
+e cila sa here qe mbyllet programi i ruan ne file me emrin “te_dhenat_e_qytetareve.txt”dhe meqe ne funksion eshte hapur file ne funksionin 
+append ajo nuk i mbishkruan te dhenat.
+
