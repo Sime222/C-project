@@ -1,0 +1,446 @@
+//deklaroj librarite qe do te perdore
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+// caktoi dhe krijoi filen me emer si me poshte
+
+#define MAX 1000
+#define filename "te_dhenat_e_qytetareve.txt"
+//caktoi nr fillesatr te fhenave dhe krijimin e file it
+int nr_qytetareve=0;
+FILE *f;
+//struktura
+struct qytetsia
+{
+    int id;
+    char emri[50];
+    char mbiemri[50];
+    char adresa[50];
+    char nr_cel[50];
+    char email[50];
+}qytetari[MAX];
+
+//prototipet e funksioneve
+void lexo();
+int gjej_qytetar();
+void rendit_emri();
+void rendit_mbiemri();
+void menu();
+void regjistro();
+void modifiko();
+void fshi();
+char kerko_emri();
+char kerko_mbiemri();
+char kerko_nr_cel();
+void afisho();
+void ruaj();
+
+// pjesa kryesore
+int main()
+{
+    lexo();
+    menu();
+   
+    int opsioni;
+    
+    f=fopen(filename,"r");
+	if(f==NULL)
+	{
+	    //e krijojme
+	    f=fopen(filename,"w");
+	    int nr=0;
+	    fprintf(f,"%d\n",nr);
+	    fclose(f);
+    }
+   
+	
+	
+    while(1)
+    { 
+    printf("\nZgjidhni nje opsion nga menu:\n");
+	scanf("%d",&opsioni);
+        switch(opsioni)
+        {
+            case 0:
+                system("cls");
+				regjistro();
+                menu();
+				break;
+            case 1:
+                system("cls");
+			    modifiko();
+                menu();	
+			    break;
+			case 2:
+			    system("cls");
+			    fshi();
+                menu();
+			    break;
+			case 3:
+			    system("cls");
+			    kerko_emri();
+			    menu();
+			    break;
+			case 4:
+			    system("cls");
+			    kerko_mbiemri();
+                menu();
+			    break;
+			case 5:
+			    system("cls");
+			    kerko_nr_cel();
+                menu();
+			    break;
+			case 6:
+			    system("cls");
+			    afisho();
+                menu();
+			    break;
+			case 7:
+			    system("cls");
+			    rendit_emri();
+                menu();
+			    break;
+			case 8:
+			    system("cls");
+			    rendit_mbiemri();
+                menu();
+			    break;
+			case 9:
+			    ruaj();
+			    return 0;
+			default:
+			    printf("Kjo komande nuk ekziston");
+			    break;
+        }
+    }
+    
+    
+    fclose(f);
+}
+//funksioni qe shfaq menune
+void menu()
+{
+    ;
+	printf("\n---------------MENU-----------------");
+	printf("\n0.Regjistro nje qytetar te ri.");
+	printf("\n1.Modifiko te dhenat e nje qytetari.");
+	printf("\n2.Fshi te dhenat e nje qytetari.");
+	printf("\n3.Kerko sipas emrit.");
+	printf("\n4.Kerko sipas mbiemrit.");
+	printf("\n5.Kerko sipas numrit te telefonit.");
+	printf("\n6.Afisho te dhenat e ruajtura me pare.");
+	printf("\n7.Rradhit qytetaret sipas emrit.");
+	printf("\n8.Rradhit qytetaret sipas mbiemrit.");
+	printf("\n9.Dil nga programi.");
+	printf("\n--------------------------------------");
+}
+//funksioni e cila lexon file-in
+void lexo()
+{
+    
+    f=fopen(filename,"r");
+    
+
+    for(int i=0;i<nr_qytetareve;i++)
+    {
+        fscanf(f,"%s %s %s %s %s %s",qytetari[i].id,qytetari[i].emri,qytetari[i].mbiemri,qytetari[i].adresa,qytetari[i].email,qytetari[i].nr_cel);
+    }
+    fclose(f);
+}
+//funksioni i cili na ndihmon ne qofte se qytetari ekziston ne sistem me ane te ID
+int gjej_qytetar(int numri)
+{
+	int i;
+	
+	
+	//Krijojme nje cikel for per te kontrolluar secilin index ne vektorin inventari[]
+	for(i=0;i<nr_qytetareve;i++)
+	{
+	    
+		if(numri==qytetari[i].id)
+		{
+			//Numri u gjet ne vektor, kthejme indeksin i ku gjendet ky numer artikulli
+		
+			return i;
+		}
+	}
+	
+	//Nese numri i artikullit nuk gjendet ne inventar, kthejme nje vlere -1
+	return -1;
+}
+// funksion i cili na mundeson ruajtjen e nje qytetari
+void regjistro()
+{
+   //hapim file ne funksionin w(per write dhe overwrite) ose a(shton ne fund te faqes)
+    f=fopen(filename,"a");
+    int a;
+    printf("\nShtimi i nje qytetari");
+	printf("\n------------------------------\n");
+	printf("Jepni id e qytetarit:\n");
+	scanf("%d",&a);
+	//therasim funksionin per te pare nese qytetari ekziston ne sistem nese jo e regjistrojme
+	int index=gjej_qytetar(a);
+	if(index>=0)
+	{
+	    printf("Ekziston qytetar me kete ID");
+	    return;
+}
+    else
+    {
+       qytetari[nr_qytetareve].id=a;
+       
+       
+       printf("Jep emrin dhe mbiemrin e qytetarit:\n");
+       scanf("%s%s",qytetari[nr_qytetareve].emri,qytetari[nr_qytetareve].mbiemri);
+       printf("Jep adresen e banimit te qytetarit:\n");
+       scanf("%s",qytetari[nr_qytetareve].adresa);
+       printf("Jep email-in e qytetarit:\n");
+        scanf("%s",qytetari[nr_qytetareve].email);
+       printf("Jepni numrin e celularit te qytetarit:\n");
+        scanf("%s",qytetari[nr_qytetareve].nr_cel);
+       nr_qytetareve++;
+     
+       printf("\nQYTETARI U SHTUA!");
+    }
+	
+}
+//funksion i cili fshine te dhena
+void fshi()
+{
+   
+    int elete;
+    printf("\nFshirja e nje qytetari");
+	printf("\n-------------------------------------------\n");
+    printf("Jepni ID e qytetarit qe deshironi te fshini:\n");
+    scanf("%d",&elete);
+    int index=gjej_qytetar(elete);
+    {
+        if(index>=0)
+        {
+            //kryejme zhvendosjen e te dhenave ne anen e djathe
+                for(int i=index;i<nr_qytetareve-1;i++)
+                {
+                    qytetari[i].id=qytetari[i+1].id;
+                    strcpy(qytetari[i].emri,qytetari[i+1].emri);
+                    strcpy(qytetari[i].mbiemri,qytetari[i+1].mbiemri);
+                    strcpy(qytetari[i].adresa,qytetari[i+1].adresa);
+                    strcpy(qytetari[i].nr_cel,qytetari[i+1].nr_cel);
+                    strcpy(qytetari[i].email,qytetari[i+1].email);
+                }
+                //ulim numrin e qytetareve te ruajtur ne sistem
+                nr_qytetareve=nr_qytetareve-1;
+                printf("Qytetari u fshi");
+           
+        }
+        else
+        {
+            printf("Qytetari me kete ID nuk gjendet.");
+        }
+    }
+    return;
+}
+
+
+//funksion per modifikimin e te dhenave te nje qytetari
+void modifiko()
+{
+    int numri;
+	int a,b,c,d,e;
+    printf("\nModifikimi i nje qytetari");
+	printf("\n------------------------------------------");
+	printf("\nJepni id e qytetarit qe doni te ndryshoni:\n");
+	scanf("%d",&numri);
+	char emri_i_ri[50],mbiemri_i_ri[50],adresa_e_ri[50],emailin_e_ri[50];
+	int i=gjej_qytetar(numri);
+	if(i>=0)
+	{
+	    printf("Doni te modifikoni emrin:1-po,0-jo\n");
+	    scanf("%d",&a);
+	    if(a==1)
+	    {
+	        printf("Jepni emrin e ri\n");
+	         scanf("%s",emri_i_ri);
+	        strcpy(qytetari[i].emri,emri_i_ri);
+        }
+	    printf("Doni te modifikoni Mbiemrin:1-po,0-jo\n");
+	    scanf("%d",&b);
+	    if(b==1)
+	    {
+	        printf("Jepni mbiemrin e ri\n");
+	         scanf("%s",mbiemri_i_ri);
+	        strcpy(qytetari[i].emri,mbiemri_i_ri);
+        }
+	    printf("Doni te modifikoni Adresen:1-po,0-jo\n");
+	    scanf("%d",&c);
+	     if(c==1)
+	    {
+	        printf("Jepni adresen e re\n");
+	         scanf("%s",adresa_e_ri);
+	        strcpy(qytetari[i].emri,adresa_e_ri);
+        }
+	        
+	    printf("Doni te modifikoni Numrin e celularit:1-po,0-jo\n");
+	    scanf("%d",&d);
+	     if(d==1)
+	    {
+	        printf("Jepni adresen e re\n");
+	         scanf("%s",adresa_e_ri);
+	        strcpy(qytetari[i].emri,adresa_e_ri);
+        }
+	    printf("Doni te modifikoni Emailin:1-po,0-jo\n");
+	    scanf("%d",&e);
+	    if(e==1)
+	    {
+	        printf("Jepni emailin e ri\n");
+	         scanf("%s",emailin_e_ri);
+	        strcpy(qytetari[i].emri,emailin_e_ri);
+        }
+	       
+	       
+	        
+    }
+    else
+    {
+        printf("qytetari nuk u gjet");
+    }
+    return;
+}
+
+
+//funksion per te kerkuar nepermjet emrit
+char kerko_emri()
+{
+    int i;
+    char a[50];
+    printf("\nKerkmi i nje qytetari sipas emrit");
+	printf("\n---------------------------------"); 
+    printf("\nJepni emrin qe doni te kerkoni:\n");
+    scanf("%s",a);
+    for(i=0;i<nr_qytetareve;i++)
+    {
+        if(strcmp(qytetari[i].emri,a)==0)
+        {
+            printf("Qytetari u gjet:\n");
+            printf("qytetari ka keto te dhena:\n ID-%d\nMbiemri-%s\nAdresa-%s\nNumri i celularit-%s\nemaili-%s\n",qytetari[i].id,qytetari[i].mbiemri,qytetari[i].adresa,qytetari[i].nr_cel,qytetari[i].email);
+        }
+        else
+        {
+            printf("\nQytetar me emrin %s nuk u gjet",a);
+        }
+        
+    }
+    
+}
+//funksion per te kerkuar sipas mbiemrit
+char kerko_mbiemri()
+{
+  int i;
+    char a[50];
+    printf("\nKerkim i nje qytetari sipas mbiemrit");
+	printf("\n-------------------------------------");
+    printf("\nJepni mbiemrin qe doni te kerkoni:\n");
+    scanf("%s",a);
+    for(i=0;i<nr_qytetareve;i++)
+    {
+        if(strcmp(qytetari[i].mbiemri,a)==0)
+        {
+            printf("Qytetari u gjet:\n");
+            printf("qytetari ka keto te dhena:\n ID-%d\nEmri-%s\nAdresa-%s\nNumri i celularit-%s\nemaili-%s\n",qytetari[i].id,qytetari[i].emri,qytetari[i].adresa,qytetari[i].nr_cel,qytetari[i].email);;
+        }
+        else
+        {
+            printf("\nQytetar me Mbiemer %s nuk u gjet",a);
+        }
+        
+    }  
+}
+//funksion per te kerkuar sipas numrit te celularit
+char kerko_nr_cel()
+{
+    int i;
+    char a[50];
+    printf("\nKerkimi i nje qytetari sipas numrit te telefonit");
+	printf("\n-----------------------------------------------\n");
+	printf("Jepni numrin e qytetarit:\n");
+    scanf("%s",a);
+    for(i=0;i<nr_qytetareve;i++)
+    {
+        if(strcmp(qytetari[i].nr_cel,a)==0)
+        {
+            printf("Qytetari u gjet:\n");
+             printf("qytetari ka keto te dhena:\n ID-%d\nEmri-%s\nMbiemri-%s\nAdresa-%S\nemaili-%s\n",qytetari[i].id,qytetari[i].emri,qytetari[i].mbiemri,qytetari[i].adresa,qytetari[i].email);
+        }
+        else
+        {
+            printf("\nQytetar me numer celulari %s nuk u gjet",a);
+        }
+        
+    }  
+}
+//funksion per ruajtjen e te dhenave ne file
+void ruaj()
+{
+    for(int i=0;i<nr_qytetareve;i++)
+    {
+        fprintf(f," ID-%d",qytetari[i].id);
+       fprintf(f," Emri %s Mbiemri %s",qytetari[i].emri,qytetari[i].mbiemri);
+       fprintf(f," Adresa %s",qytetari[i].adresa);
+       fprintf(f," Emaili %s",qytetari[i].email);
+       fprintf(f," Nr celularit %s\n",qytetari[i].nr_cel);
+    }
+         
+}
+//funksion per te afishuar te dhenat e ruajtua ne sistem
+void afisho()
+{
+    printf("\nAfishimi i te dhenave");
+	printf("\n-------------------------\n");
+    int i;
+    for(i=0;i<nr_qytetareve;i++)
+    {
+        printf("----------------------------------------------\n");
+        printf(" Qytetari %d:ID-%d",i+1,qytetari[i].id);
+        printf("\n----------------------------------------------");
+        printf("\nEmri: %s\nMbiemri: %s\nAdresa: %s\nNr.telfoni: %s\nE-mail: %s\n",qytetari[i].emri,qytetari[i].mbiemri,qytetari[i].adresa,qytetari[i].nr_cel,qytetari[i].email);
+        printf("\n");
+    }
+}
+
+
+
+//funksion per renditjen  sipas emrit
+void rendit_emri()
+{
+     struct qytetsia temp;
+    for(int i=0;i<nr_qytetareve-1;i++)
+    {
+        for(int j=i+1;j<nr_qytetareve;j++)
+        {
+            if(strcmp(qytetari[i].emri,qytetari[j].emri)>0)
+            {
+                temp=qytetari[i];
+                qytetari[i]=qytetari[j];
+                qytetari[j]=temp;
+               
+            }
+        }
+    }
+}
+//funksion per radhitjen sipas mbiemrit
+void rendit_mbiemri()
+{
+    struct qytetsia temp;
+    for(int i=0;i<nr_qytetareve-1;i++)
+    {
+        for(int j=i+1;j<nr_qytetareve;j++)
+        {
+            if(strcmp(qytetari[i].mbiemri,qytetari[j].mbiemri)>0)
+            {
+                temp=qytetari[i];
+                qytetari[i]=qytetari[j];
+                qytetari[j]=temp;
+            }
+        }
+    }
+}
